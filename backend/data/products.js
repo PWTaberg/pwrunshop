@@ -77,6 +77,46 @@ const products = [
     rating: 4,
     numReviews: 12,
   },
+  {
+    _id: '7',
+    name: 'IRFG Racing App',
+    image: '/images/racing-app.jpg',
+    description:
+      'The racing app for all runners in the world. Race each other for fun',
+    brand: 'I Run For Good',
+    category: 'App',
+    price: 19.99,
+    countInStock: 8,
+    rating: 6,
+    numReviews: 1,
+  },
+  {
+    _id: '8',
+    name: 'IRFG Runner Shades',
+    image: '/images/runners-glasses.jpg',
+    description:
+      'The ultimate shades for runners, low air resistance, anti-fog',
+    brand: 'IRFG',
+    category: 'Running Equipment',
+    price: 39.99,
+    countInStock: 20,
+    rating: 4,
+    numReviews: 8,
+  },
+  {
+    _id: '9',
+    name: 'IRFG Phone Armband',
+    image: '/images/sports-armband.jpg',
+    description:
+      'The armband that keeps your phone safely in place even when you run fast',
+    brand: 'IRFG',
+    category: 'Running Equipment',
+    price: 14.99,
+    countInStock: 24,
+    rating: 2,
+    numReviews: 8,
+  },
 ];
 
-export default products;
+// export default products
+module.exports = products;

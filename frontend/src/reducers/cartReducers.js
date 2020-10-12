@@ -5,14 +5,17 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
 		case CART_ADD_ITEM:
 			const addedItem = action.payload;
 			const existItem = state.cartItems.find(
-				(listItem) => listItem.product === addedItem.product
+				(listItem) => listItem.productId === addedItem.productId
 			);
 
 			if (existItem) {
+				console.log('existItem', existItem);
+				console.log('existItem.product', existItem.productId);
+
 				return {
 					...state,
 					cartItems: state.cartItems.map((item) =>
-						item.product === existItem.product ? addedItem : item
+						item.productId === existItem.productId ? addedItem : item
 					),
 				};
 			} else {
@@ -26,7 +29,7 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
 			return {
 				...state,
 				cartItems: state.cartItems.filter(
-					(cartItem) => cartItem.product !== action.payload
+					(cartItem) => cartItem.productId !== action.payload
 				),
 			};
 

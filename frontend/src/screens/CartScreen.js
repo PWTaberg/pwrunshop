@@ -33,6 +33,7 @@ const CartScreen = ({ match, location, history }) => {
 	}, [dispatch, productId, qty]);
 
 	const removeFromCartHandler = (id) => {
+		console.log('removeFromCart id', id);
 		dispatch(removeFromCart(id));
 		history.push('/cart');
 	};
@@ -52,7 +53,7 @@ const CartScreen = ({ match, location, history }) => {
 				) : (
 					<ListGroup variant='flush'>
 						{cartItems.map((cartItem) => (
-							<ListGroup.Item key={cartItem.product}>
+							<ListGroup.Item key={cartItem.productId}>
 								<Row>
 									<Col md={2}>
 										<Image
@@ -63,7 +64,7 @@ const CartScreen = ({ match, location, history }) => {
 										></Image>
 									</Col>
 									<Col md={3}>
-										<Link to={`/product/${cartItem.product}`}>
+										<Link to={`/product/${cartItem.productId}`}>
 											{cartItem.name}
 										</Link>
 									</Col>
@@ -74,7 +75,7 @@ const CartScreen = ({ match, location, history }) => {
 											value={cartItem.qty}
 											onChange={(e) =>
 												dispatch(
-													addToCart(cartItem.product, Number(e.target.value))
+													addToCart(cartItem.productId, Number(e.target.value))
 												)
 											}
 										>
@@ -89,7 +90,7 @@ const CartScreen = ({ match, location, history }) => {
 										<Button
 											type='button'
 											variant='light'
-											onClick={() => removeFromCartHandler(cartItem.product)}
+											onClick={() => removeFromCartHandler(cartItem.productId)}
 										>
 											<i className='fas fa-trash'></i>
 										</Button>

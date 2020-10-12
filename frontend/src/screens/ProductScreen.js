@@ -16,27 +16,34 @@ import Message from '../components/Message';
 
 import { listProductDetails } from '../actions/productActions';
 
-// const ProductScreen = ({ match }) => {
-const ProductScreen = ({ history, match }) => {
-	/*
-	console.log('props: ', props);
+//const ProductScreen = ({ history, match }) => {
+const ProductScreen = (props) => {
 	const { history, match } = props;
-  console.log('match.params.id', match.params.id);
-  */
+
+	console.log('props: ', props);
+	console.log('match.params.id', match.params.id);
 
 	const [qty, setQty] = useState(1);
 	const dispatch = useDispatch();
+
+	console.log('ProductScreen.qty', qty);
 
 	const productDetails = useSelector((state) => state.productDetails);
 	const { loading, error, product } = productDetails;
 
 	useEffect(() => {
 		// call the action listProductDetailss
+		console.log('useEffect');
 		dispatch(listProductDetails(match.params.id));
 	}, [dispatch, match]);
 
 	const addToCartHandler = () => {
 		history.push(`/cart/${match.params.id}?qty=${qty}`);
+	};
+
+	const updateQty = (e) => {
+		console.log('updateQty', e.target.value);
+		setQty(e.target.value);
 	};
 
 	return (
@@ -85,7 +92,7 @@ const ProductScreen = ({ history, match }) => {
 									<Row>
 										<Col>Status:</Col>
 										<Col>
-											{product.countInStock > 0 ? 'In Stock' : 'Out of'}
+											{product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
 										</Col>
 									</Row>
 								</ListGroup.Item>
@@ -98,7 +105,7 @@ const ProductScreen = ({ history, match }) => {
 												<Form.Control
 													as='select'
 													value={qty}
-													onChange={(e) => setQty(e.target.value)}
+													onChange={(e) => updateQty(e)}
 												>
 													{[...Array(product.countInStock).keys()].map(
 														(index) => (

@@ -85,10 +85,46 @@ exports.getUserProfile = asyncHandler(async (req, res) => {
 	}
 });
 
+// @desc Update user profile
+// @route PUT /api/users/profile
+// @access Private
+
+//const updateUserProfile = asyncHandler(async (req,res) => {
+
+exports.updateUserProfile = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.user._id);
+
+	if (user) {
+		// add updated name OR keep old name
+		user.name = req.body.name || user.name;
+		user.email = req.body.email || user.email;
+
+		// check if password is sent
+		// We don't want to include password unless it has been modified
+		if (req.body.password) {
+			user.password = req.body.password;
+		}
+
+		const updatedUser = await user.save();
+
+		res.json({
+			_id: updatedUser._id,
+			name: updatedUser.name,
+			email: updatedUser.email,
+			isAdmin: updatedUser.isAdmin,
+			token: generateToken(updatedUser._id),
+		});
+	} else {
+		res.status(404);
+		throw new Error('User not found');
+	}
+});
+
 /*
 exports {
   authUser,
   getUserProfile,
+  updateUserProfile,
   registerUser
 }
 */

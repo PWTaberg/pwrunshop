@@ -20,7 +20,7 @@ import { listProductDetails } from '../actions/productActions';
 const ProductScreen = (props) => {
 	const { history, match } = props;
 
-	console.log('props: ', props);
+	console.log('ProductScreen.props: ', props);
 	console.log('match.params.id', match.params.id);
 
 	const [qty, setQty] = useState(1);
@@ -71,7 +71,9 @@ const ProductScreen = (props) => {
 									text={`${product.numReviews} reviews`}
 								/>
 							</ListGroup.Item>
-							<ListGroup.Item>Price: ${product.price}</ListGroup.Item>
+							<ListGroup.Item>
+								Price: ${product.price}
+							</ListGroup.Item>
 							<ListGroup.Item>
 								Description: s{product.description}
 							</ListGroup.Item>
@@ -92,7 +94,9 @@ const ProductScreen = (props) => {
 									<Row>
 										<Col>Status:</Col>
 										<Col>
-											{product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
+											{product.countInStock > 0
+												? 'In Stock'
+												: 'Out of Stock'}
 										</Col>
 									</Row>
 								</ListGroup.Item>
@@ -105,16 +109,23 @@ const ProductScreen = (props) => {
 												<Form.Control
 													as='select'
 													value={qty}
-													onChange={(e) => updateQty(e)}
+													onChange={(e) =>
+														updateQty(e)
+													}
 												>
-													{[...Array(product.countInStock).keys()].map(
-														(index) => (
-															<option key={index + 1} value={index + 1}>
-																{' '}
-																{index + 1}
-															</option>
-														)
-													)}
+													{[
+														...Array(
+															product.countInStock
+														).keys(),
+													].map((index) => (
+														<option
+															key={index + 1}
+															value={index + 1}
+														>
+															{' '}
+															{index + 1}
+														</option>
+													))}
 												</Form.Control>
 											</Col>
 										</Row>

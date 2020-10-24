@@ -12,14 +12,16 @@ const PaymentScreen = ({ history }) => {
 	if (!shippingAddress) {
 		history.push('/shipping');
 	}
-	const [paymentMethod, setPaymentMethod] = useState('Paypal');
+	const [paymentMethod, setPaymentMethod] = useState('PayPal');
 
 	const dispatch = useDispatch();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-		dispatch(savePaymentMethod({ paymentMethod }));
-		history.push('/placeOrder');
+		console.log('PaymentScreen.paymentMethod', paymentMethod);
+		dispatch(savePaymentMethod(paymentMethod));
+		console.log('PaymentScreen.push(/placeorder)');
+		history.push('/placeorder');
 	};
 	return (
 		<FormContainer>

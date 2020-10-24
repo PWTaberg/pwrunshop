@@ -2,7 +2,10 @@ import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
+const CheckoutSteps = (props) => {
+	//	console.log('CheckoutSteps.props', props);
+	const { step1, step2, step3, step4 } = props;
+
 	return (
 		<Nav className='justify-content-center mb-4'>
 			<Nav.Item>

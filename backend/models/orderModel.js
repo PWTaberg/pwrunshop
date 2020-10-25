@@ -22,7 +22,7 @@ const orderSchema = mongoose.Schema(
 					required: true,
 				},
 				price: {
-					type: String,
+					type: Number,
 					required: true,
 				},
 				product: {
@@ -90,7 +90,6 @@ const orderSchema = mongoose.Schema(
 		},
 		paidAt: {
 			type: Date,
-			required: true,
 		},
 		isDelivered: {
 			type: Boolean,
@@ -99,7 +98,6 @@ const orderSchema = mongoose.Schema(
 		},
 		deliveredAt: {
 			type: Date,
-			required: true,
 		},
 	},
 	{

@@ -53,7 +53,7 @@ const CartScreen = ({ match, location, history }) => {
 				) : (
 					<ListGroup variant='flush'>
 						{cartItems.map((cartItem) => (
-							<ListGroup.Item key={cartItem.productId}>
+							<ListGroup.Item key={cartItem.product}>
 								<Row>
 									<Col md={2}>
 										<Image
@@ -64,7 +64,9 @@ const CartScreen = ({ match, location, history }) => {
 										></Image>
 									</Col>
 									<Col md={3}>
-										<Link to={`/product/${cartItem.productId}`}>
+										<Link
+											to={`/product/${cartItem.product}`}
+										>
 											{cartItem.name}
 										</Link>
 									</Col>
@@ -75,12 +77,22 @@ const CartScreen = ({ match, location, history }) => {
 											value={cartItem.qty}
 											onChange={(e) =>
 												dispatch(
-													addToCart(cartItem.productId, Number(e.target.value))
+													addToCart(
+														cartItem.product,
+														Number(e.target.value)
+													)
 												)
 											}
 										>
-											{[...Array(cartItem.countInStock).keys()].map((index) => (
-												<option key={index + 1} value={index + 1}>
+											{[
+												...Array(
+													cartItem.countInStock
+												).keys(),
+											].map((index) => (
+												<option
+													key={index + 1}
+													value={index + 1}
+												>
 													{index + 1}
 												</option>
 											))}
@@ -90,7 +102,11 @@ const CartScreen = ({ match, location, history }) => {
 										<Button
 											type='button'
 											variant='light'
-											onClick={() => removeFromCartHandler(cartItem.productId)}
+											onClick={() =>
+												removeFromCartHandler(
+													cartItem.product
+												)
+											}
 										>
 											<i className='fas fa-trash'></i>
 										</Button>
@@ -106,12 +122,19 @@ const CartScreen = ({ match, location, history }) => {
 					<ListGroup.Item variant='flush'>
 						<h2>
 							Subtotal (
-							{cartItems.reduce((acc, cartItem) => acc + cartItem.qty, 0)})
-							items
+							{cartItems.reduce(
+								(acc, cartItem) => acc + cartItem.qty,
+								0
+							)}
+							) items
 						</h2>
 						$
 						{cartItems
-							.reduce((acc, cartItem) => acc + cartItem.price * cartItem.qty, 0)
+							.reduce(
+								(acc, cartItem) =>
+									acc + cartItem.price * cartItem.qty,
+								0
+							)
 							.toFixed(2)}
 					</ListGroup.Item>
 					<ListGroup.Item>

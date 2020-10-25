@@ -22,9 +22,9 @@ exports.getProducts = asyncHandler(async (req, res) => {
 exports.getProductById = asyncHandler(async (req, res) => {
 	const product = await Product.findById(req.params.id);
 
-	/* simulate error
+	/* simulate error 
 	res.status(404);
-	throw new Error('Product not found');
+	throw new Error('Hej Anton, Product not found !');
 	*/
 
 	if (product) {

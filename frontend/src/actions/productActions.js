@@ -40,11 +40,11 @@ export const listProducts = () => async (dispatch) => {
 		/*
 		// Print the error
 		if (error.response && error.response.data.message) {
-			console.log('Error: ', error.response);
+			console.log('Error - error.response : ', error.response);
 		} else {
-			console.log('Error: nothing');
-    }
-    */
+			console.log('Error - error.message : ', error.message);
+		}
+		*/
 	}
 };
 

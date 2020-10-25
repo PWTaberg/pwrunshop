@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, Col, Row } from 'react-bootstrap';
+import { Form, Button, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
 import CheckoutSteps from '../components/CheckoutSteps';
@@ -18,9 +18,7 @@ const PaymentScreen = ({ history }) => {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-		console.log('PaymentScreen.paymentMethod', paymentMethod);
 		dispatch(savePaymentMethod(paymentMethod));
-		console.log('PaymentScreen.push(/placeorder)');
 		history.push('/placeorder');
 	};
 	return (

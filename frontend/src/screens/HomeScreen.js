@@ -6,7 +6,8 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { listProducts } from '../actions/productActions';
 
-const HomeScreen = () => {
+const HomeScreen = (props) => {
+	console.log('HomeScreen.props', props);
 	const dispatch = useDispatch();
 
 	const productList = useSelector((state) => state.productList);

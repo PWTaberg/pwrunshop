@@ -15,6 +15,8 @@ import {
 import {
 	orderCreateReducer,
 	orderDetailsReducer,
+	orderPayReducer,
+	orderListMyReducer,
 } from './reducers/orderReducers';
 
 // Reducers
@@ -28,6 +30,8 @@ const reducer = combineReducers({
 	userUpdateProfile: userUpdateProfileReducer,
 	orderCreate: orderCreateReducer,
 	orderDetails: orderDetailsReducer,
+	orderPay: orderPayReducer,
+	orderListMy: orderListMyReducer,
 });
 
 // Get existing cart from local storage

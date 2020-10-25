@@ -4,7 +4,7 @@ const Order = require('../models/orderModel.js');
 // @desc Create new order
 // @route POST /api/orders
 // @access Private
-//const getProducts = asyncHandler(async (req,res) => {
+//const addOrderItems = asyncHandler(async (req,res) => {
 
 exports.addOrderItems = asyncHandler(async (req, res) => {
 	const {
@@ -36,6 +36,25 @@ exports.addOrderItems = asyncHandler(async (req, res) => {
 
 		const createdOrder = await order.save();
 		res.status(201).json(createdOrder);
+	}
+});
+
+// @desc Get order by id
+// @route GET /api/orders/:id
+// @access Private
+//const getOrderById = asyncHandler(async (req,res) => {
+
+exports.getOrderById = asyncHandler(async (req, res) => {
+	const order = await Order.findById(req.params.id).populate(
+		'user',
+		'name email'
+	);
+
+	if (order) {
+		res.json(order);
+	} else {
+		res.status(404);
+		throw new Error('Order not found');
 	}
 });
 

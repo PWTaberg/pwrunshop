@@ -49,10 +49,16 @@ const shippingAddressFromStorage = localStorage.getItem('shippingAddress')
 	? JSON.parse(localStorage.getItem('shippingAddress'))
 	: {};
 
+// Get existing payment method from local storage
+const paymentMethodFromStorage = localStorage.getItem('paymentMethod')
+	? JSON.parse(localStorage.getItem('paymentMethod'))
+	: { paymentMethod: 'PayPal' };
+
 const initialState = {
 	cart: {
 		cartItems: cartItemsFromStorage,
 		shippingAddress: shippingAddressFromStorage,
+		paymentMethod: paymentMethodFromStorage,
 	},
 	userLogin: { userInfo: userInfoFromStorage },
 };

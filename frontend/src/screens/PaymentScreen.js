@@ -7,20 +7,23 @@ import { savePaymentMethod } from '../actions/cartActions';
 
 const PaymentScreen = ({ history }) => {
 	const cart = useSelector((state) => state.cart);
-	const { shippingAddress } = cart;
+
+	const { shippingAddress, paymentMethod } = cart;
 
 	if (!shippingAddress) {
 		history.push('/shipping');
 	}
-	const [paymentMethod, setPaymentMethod] = useState('PayPal');
+
+	const [method, setMethod] = useState(paymentMethod);
 
 	const dispatch = useDispatch();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-		dispatch(savePaymentMethod(paymentMethod));
+		dispatch(savePaymentMethod(method));
 		history.push('/placeorder');
 	};
+
 	return (
 		<FormContainer>
 			<CheckoutSteps step1 step2 step3 />
@@ -35,8 +38,8 @@ const PaymentScreen = ({ history }) => {
 							id='PayPal'
 							name='paymentMethod'
 							value='PayPal'
-							checked
-							onChange={(e) => setPaymentMethod(e.target.value)}
+							checked={method === 'PayPal' ? true : false}
+							onChange={(e) => setMethod(e.target.value)}
 						></Form.Check>
 						<Form.Check
 							type='radio'
@@ -44,7 +47,8 @@ const PaymentScreen = ({ history }) => {
 							id='Stripe'
 							name='paymentMethod'
 							value='Stripe'
-							onChange={(e) => setPaymentMethod(e.target.value)}
+							checked={method === 'Stripe' ? true : false}
+							onChange={(e) => setMethod(e.target.value)}
 						></Form.Check>
 					</Col>
 				</Form.Group>

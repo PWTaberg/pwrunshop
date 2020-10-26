@@ -9,22 +9,24 @@ import { createOrder } from '../actions/orderActions';
 const PlaceOrderScreen = ({ history }) => {
 	const dispatch = useDispatch();
 	const cart = useSelector((state) => state.cart);
-	// Calculate prices
 
+	// Calculate prices
 	cart.itemsPrice = cart.cartItems
 		.reduce((acc, item) => acc + item.price * item.qty, 0)
 		.toFixed(2);
 
 	cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 100).toFixed(2);
 
-	const moms = 0.15;
+	const tax = 0.25; // moms ska vara inklusive på items och shipping
+	cart.taxPrice = Number(tax * cart.itemsPrice).toFixed(2);
+
 	/*
+	Maybe not needed
 	const addDecimals = (num) => {
 		return (Math.round(num * 100) / 100).toFixed(2);
 	};
 	cart.taxPrice = addDecimals(Number((moms * cart.itemsPrice).toFixed(2)));
     */
-	cart.taxPrice = Number(moms * cart.itemsPrice).toFixed(2);
 
 	cart.totalPrice = (
 		Number(cart.itemsPrice) +
@@ -36,11 +38,14 @@ const PlaceOrderScreen = ({ history }) => {
 	const { order, success, error } = orderCreate;
 
 	useEffect(() => {
-		if (success) {
+		// if (success && order)
+		if (success && order) {
 			history.push(`/order/${order._id}`);
 		}
+
+		// [history, success, order]
 		// eslint-disable-next-line
-	}, [history, success]);
+	}, [history, success, order]);
 
 	const placeOrderHandler = () => {
 		dispatch(

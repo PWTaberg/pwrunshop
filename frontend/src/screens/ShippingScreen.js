@@ -18,7 +18,6 @@ const ShippingScreen = ({ history }) => {
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-		console.log('submit shippingAddress');
 		dispatch(saveShippingAddress({ address, city, postalCode, country }));
 		history.push('/payment');
 	};
@@ -33,6 +32,7 @@ const ShippingScreen = ({ history }) => {
 						type='text'
 						placeholder='Enter address'
 						value={address}
+						required
 						onChange={(e) => setAddress(e.target.value)}
 					></Form.Control>
 				</Form.Group>
@@ -42,6 +42,7 @@ const ShippingScreen = ({ history }) => {
 						type='text'
 						placeholder='Enter city'
 						value={city}
+						required
 						onChange={(e) => setCity(e.target.value)}
 					></Form.Control>
 				</Form.Group>
@@ -51,6 +52,7 @@ const ShippingScreen = ({ history }) => {
 						type='text'
 						placeholder='Enter postal code'
 						value={postalCode}
+						required
 						onChange={(e) => setPostalCode(e.target.value)}
 					></Form.Control>
 				</Form.Group>
@@ -60,6 +62,7 @@ const ShippingScreen = ({ history }) => {
 						type='text'
 						placeholder='Enter country'
 						value={country}
+						required
 						onChange={(e) => setCountry(e.target.value)}
 					></Form.Control>
 				</Form.Group>

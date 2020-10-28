@@ -44,13 +44,10 @@ const OrderScreen = ({ match }) => {
 
 		// Get order from db
 		if (!order || order._id !== orderId || successPay) {
-			console.log('OrderScreen.useEffect.dispatch(ORDER_PAY_RESET)');
 			dispatch({ type: ORDER_PAY_RESET });
-			console.log('OrderScreen.useEffect.dispatch(getOrderDetails)');
 			dispatch(getOrderDetails(orderId));
 		} else if (!order.isPaid) {
 			if (!window.paypal) {
-				console.log('OrderScreen.useEffect.addPayPalScript');
 				addPayPalScript();
 			} else {
 				setSdkReady(true);
@@ -59,10 +56,6 @@ const OrderScreen = ({ match }) => {
 	}, [dispatch, order, orderId, successPay]);
 
 	const successPaymentHandler = (paymentResult) => {
-		console.log(
-			'OrderScreen.successPaymentHandler.paymentResult',
-			paymentResult
-		);
 		dispatch(payOrder(orderId, paymentResult));
 	};
 
@@ -97,7 +90,7 @@ const OrderScreen = ({ match }) => {
 							</p>
 							{order.isDelivered ? (
 								<Message variant='success'>
-									Paid on {order.deliveredAt}
+									Paid on {order.deliveredAt.substring(0, 10)}
 								</Message>
 							) : (
 								<Message variant='danger'>
@@ -113,7 +106,7 @@ const OrderScreen = ({ match }) => {
 							</p>
 							{order.isPaid ? (
 								<Message variant='success'>
-									Paid on {order.paidAt}
+									Paid on {order.paidAt.substring(0, 10)}
 								</Message>
 							) : (
 								<Message variant='danger'>Not Paid </Message>

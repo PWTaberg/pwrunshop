@@ -20,7 +20,6 @@ export const createOrder = (order) => async (dispatch, getState) => {
 			type: ORDER_CREATE_REQUEST,
 		});
 
-		// testa bryta upp
 		const {
 			userLogin: { userInfo },
 		} = getState();
@@ -34,7 +33,6 @@ export const createOrder = (order) => async (dispatch, getState) => {
 
 		const { data } = await axios.post(`/api/orders`, order, config);
 
-		// get details
 		dispatch({
 			type: ORDER_CREATE_SUCCESS,
 			payload: data,
@@ -96,7 +94,6 @@ export const payOrder = (orderId, paymentResult) => async (
 			type: ORDER_PAY_REQUEST,
 		});
 
-		// testa bryta upp
 		const {
 			userLogin: { userInfo },
 		} = getState();

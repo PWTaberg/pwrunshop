@@ -33,7 +33,6 @@ const CartScreen = ({ match, location, history }) => {
 	}, [dispatch, productId, qty]);
 
 	const removeFromCartHandler = (id) => {
-		console.log('removeFromCart id', id);
 		dispatch(removeFromCart(id));
 		history.push('/cart');
 	};

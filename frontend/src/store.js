@@ -11,12 +11,15 @@ import {
 	userRegisterReducer,
 	userDetailsReducer,
 	userUpdateProfileReducer,
+	userListReducer,
+	userDeleteReducer,
+	userUpdateReducer,
 } from './reducers/userReducers';
 import {
 	orderCreateReducer,
 	orderDetailsReducer,
 	orderPayReducer,
-	orderListMyReducer,
+	orderMyListReducer,
 } from './reducers/orderReducers';
 
 // Reducers
@@ -28,10 +31,13 @@ const reducer = combineReducers({
 	userRegister: userRegisterReducer,
 	userDetails: userDetailsReducer,
 	userUpdateProfile: userUpdateProfileReducer,
+	userList: userListReducer,
+	userDelete: userDeleteReducer,
+	userUpdate: userUpdateReducer,
 	orderCreate: orderCreateReducer,
 	orderDetails: orderDetailsReducer,
 	orderPay: orderPayReducer,
-	orderListMy: orderListMyReducer,
+	orderMyList: orderMyListReducer,
 });
 
 // Get existing cart from local storage
@@ -52,7 +58,9 @@ const shippingAddressFromStorage = localStorage.getItem('shippingAddress')
 // Get existing payment method from local storage
 const paymentMethodFromStorage = localStorage.getItem('paymentMethod')
 	? JSON.parse(localStorage.getItem('paymentMethod'))
-	: { paymentMethod: 'PayPal' };
+	: 'PayPal';
+
+//console.log('store.paymentMethodFromStorage', paymentMethodFromStorage);
 
 const initialState = {
 	cart: {

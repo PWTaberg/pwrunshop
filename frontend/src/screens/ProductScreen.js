@@ -20,20 +20,17 @@ import { listProductDetails } from '../actions/productActions';
 const ProductScreen = (props) => {
 	const { history, match } = props;
 
-	console.log('ProductScreen.props: ', props);
-	console.log('match.params.id', match.params.id);
+	//console.log('ProductScreen.props: ', props);
+	//console.log('match.params.id', match.params.id);
 
 	const [qty, setQty] = useState(1);
 	const dispatch = useDispatch();
-
-	console.log('ProductScreen.qty', qty);
 
 	const productDetails = useSelector((state) => state.productDetails);
 	const { loading, error, product } = productDetails;
 
 	useEffect(() => {
 		// call the action listProductDetailss
-		console.log('useEffect');
 		dispatch(listProductDetails(match.params.id));
 	}, [dispatch, match]);
 
@@ -42,7 +39,6 @@ const ProductScreen = (props) => {
 	};
 
 	const updateQty = (e) => {
-		console.log('updateQty', e.target.value);
 		setQty(e.target.value);
 	};
 

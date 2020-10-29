@@ -9,9 +9,9 @@ import {
 	ORDER_PAY_REQUEST,
 	ORDER_PAY_SUCCESS,
 	ORDER_PAY_FAIL,
-	ORDER_LIST_MY_REQUEST,
-	ORDER_LIST_MY_SUCCESS,
-	ORDER_LIST_MY_FAIL,
+	ORDER_MY_LIST_REQUEST,
+	ORDER_MY_LIST_SUCCESS,
+	ORDER_MY_LIST_FAIL,
 } from '../constants/orderConstants';
 
 export const createOrder = (order) => async (dispatch, getState) => {
@@ -129,10 +129,9 @@ export const payOrder = (orderId, paymentResult) => async (
 };
 
 export const listMyOrders = () => async (dispatch, getState) => {
-	console.log('orderActions.listMyOrders');
 	try {
 		dispatch({
-			type: ORDER_LIST_MY_REQUEST,
+			type: ORDER_MY_LIST_REQUEST,
 		});
 
 		// testa bryta upp
@@ -148,17 +147,15 @@ export const listMyOrders = () => async (dispatch, getState) => {
 
 		const { data } = await axios.get(`/api/orders/myorders`, config);
 
-		console.log('orderActions.listMyOrders.data', data);
-
 		// get details
 		dispatch({
-			type: ORDER_LIST_MY_SUCCESS,
+			type: ORDER_MY_LIST_SUCCESS,
 			payload: data,
 		});
 	} catch (error) {
 		// Request was a failure
 		dispatch({
-			type: ORDER_LIST_MY_FAIL,
+			type: ORDER_MY_LIST_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

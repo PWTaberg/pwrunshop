@@ -6,6 +6,12 @@ import {
 	CART_SAVE_PAYMENT_METHOD,
 } from '../constants/cartConstants';
 
+import {
+	CART_ITEMS,
+	SHIPPING_ADDRESS,
+	PAYMENT_METHOD,
+} from '../constants/localStoreConstants';
+
 export const addToCart = (id, qty) => async (dispatch, getState) => {
 	const { data } = await axios.get(`/api/products/${id}`);
 	dispatch({
@@ -32,10 +38,7 @@ export const removeFromCart = (id) => (dispatch, getState) => {
 		payload: id,
 	});
 
-	localStorage.setItem(
-		'cartItems',
-		JSON.stringify(getState().cart.cartItems)
-	);
+	localStorage.setItem(CART_ITEMS, JSON.stringify(getState().cart.cartItems));
 };
 
 export const saveShippingAddress = (data) => (dispatch) => {
@@ -44,15 +47,15 @@ export const saveShippingAddress = (data) => (dispatch) => {
 		payload: data,
 	});
 
-	localStorage.setItem('shippingAddress', JSON.stringify(data));
+	localStorage.setItem(SHIPPING_ADDRESS, JSON.stringify(data));
 };
 
 export const savePaymentMethod = (data) => (dispatch) => {
-	console.log('paymentMethod', data);
 	dispatch({
 		type: CART_SAVE_PAYMENT_METHOD,
 		payload: data,
 	});
 
-	localStorage.setItem('paymentMethod', JSON.stringify(data));
+	// paymentMethod: 'PayPal'
+	localStorage.setItem(PAYMENT_METHOD, JSON.stringify(data));
 };

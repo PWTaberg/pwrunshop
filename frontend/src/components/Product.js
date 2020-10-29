@@ -5,7 +5,7 @@ import Rating from './Rating';
 
 //const Product = ({ product }) => {
 const Product = (props) => {
-	console.log('Product.props', props);
+	//	console.log('Product.props', props);
 	const { product } = props;
 	return (
 		<Card className='my-3 p-3 rounded'>

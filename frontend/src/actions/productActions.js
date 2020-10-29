@@ -19,8 +19,8 @@ export const listProducts = () => async (dispatch) => {
 		const productListResponse = await axios.get('/api/products');
 		const { data } = productListResponse;
 
-		console.log('producrActions.productListRespone', productListResponse);
-		console.log('data', data);
+		//	console.log('producrActions.productListRespone', productListResponse);
+		//	console.log('data', data);
 		/* ** */
 
 		// Request was success
@@ -37,14 +37,6 @@ export const listProducts = () => async (dispatch) => {
 					? error.response.data.message
 					: error.message,
 		});
-		/*
-		// Print the error
-		if (error.response && error.response.data.message) {
-			console.log('Error - error.response : ', error.response);
-		} else {
-			console.log('Error - error.message : ', error.message);
-		}
-		*/
 	}
 };
 
@@ -62,8 +54,8 @@ export const listProductDetails = (id) => async (dispatch) => {
 	} catch (error) {
 		// Request was a failure
 		//console.log('productAction.listProductDetails.error', error);
-		console.log('error.response', error.response);
-		console.log('error.message', error.message);
+		//console.log('error.response', error.response);
+		//console.log('error.message', error.message);
 
 		dispatch({
 			type: PRODUCT_DETAILS_FAIL,

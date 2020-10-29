@@ -14,16 +14,18 @@ const PaymentScreen = ({ history }) => {
 		history.push('/shipping');
 	}
 
-	//const [paymentMethod, setPaymentMethod] = useState('PayPal');
 	const [method, setMethod] = useState(paymentMethod);
 
+	console.log('PaymentScreen.paymentMethod', paymentMethod);
+	console.log('PaymentScreen.method', method);
 	const dispatch = useDispatch();
 
 	const submitHandler = (e) => {
-		e.preventDefault();
-		//dispatch(savePaymentMethod(paymentMethod));
-		dispatch(savePaymentMethod(method));
+		console.log('PaymentScreen.submitHandler.paymentMethod', paymentMethod);
+		console.log('PaymentScreen.submitHandler.method', method);
 
+		e.preventDefault();
+		dispatch(savePaymentMethod(method));
 		history.push('/placeorder');
 	};
 	/*
@@ -47,7 +49,7 @@ checked={method === 'Stripe' ? true : false}
 							id='PayPal'
 							name='paymentMethod'
 							value='PayPal'
-							checked={method === 'PayPal' ? true : false}
+							checked
 							onChange={(e) => setMethod(e.target.value)}
 						></Form.Check>
 						<Form.Check
@@ -56,7 +58,6 @@ checked={method === 'Stripe' ? true : false}
 							id='Stripe'
 							name='paymentMethod'
 							value='Stripe'
-							checked={method === 'Stripe' ? true : false}
 							onChange={(e) => setMethod(e.target.value)}
 						></Form.Check>
 					</Col>

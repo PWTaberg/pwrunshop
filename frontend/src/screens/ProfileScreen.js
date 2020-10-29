@@ -8,6 +8,9 @@ import Loader from '../components/Loader';
 import { getUserDetails, updateUserProfile } from '../actions/userActions';
 import { listMyOrders } from '../actions/orderActions';
 
+// BUG FIX
+import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants';
+
 function ProfileScreen({ location, history }) {
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
@@ -23,32 +26,34 @@ function ProfileScreen({ location, history }) {
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
 
+	// BUG FIX - make sure success is included
 	const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
 	const { success } = userUpdateProfile;
 
-	const orderListMy = useSelector((state) => state.orderListMy);
-	const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
+	const orderMyList = useSelector((state) => state.orderMyList);
+	const { loading: loadingOrders, error: errorOrders, orders } = orderMyList;
 
 	useEffect(() => {
-		console.log('ProfileScreen.useEffect');
 		if (!userInfo) {
 			history.push('/login');
 		} else {
-			if (!user.name) {
+			// BUG FIX
+			if (!user.name || !user.name || success) {
 				// 'profile => /api/users/profile in getUserDetails
-				console.log('ProfileScreen.useEffect.dispatch(getUserDetails)');
+
+				// BUG FIX
+				dispatch({ type: USER_UPDATE_PROFILE_RESET });
 				dispatch(getUserDetails('profile'));
-				console.log('ProfileScreen.useEffect.dispatch(listMyOrders)');
 				dispatch(listMyOrders());
 			} else {
 				setName(user.name);
 				setEmail(user.email);
 			}
 		}
-	}, [dispatch, history, userInfo, user, orders]);
+		// BUG FIX - orders maybe not needed
+	}, [dispatch, history, userInfo, user, success, orders]);
 
 	const submitHandler = (e) => {
-		console.log('Submit Get Profile');
 		e.preventDefault();
 		if (password !== confirmPassword) {
 			setMessage('Passwords do not match');
@@ -57,7 +62,6 @@ function ProfileScreen({ location, history }) {
 				// Id from user, the rest from state
 				updateUserProfile({ id: user._id, name, email, password })
 			);
-			console.log('submitHandler.SUCCESS::', success);
 		}
 	};
 

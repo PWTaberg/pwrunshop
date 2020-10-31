@@ -23,7 +23,7 @@ const UserListScreen = ({ history }) => {
 			dispatch(listUsers());
 		} else {
 			// Maybe wrong: was /login
-			history.push('/admin/login');
+			history.push('/login');
 		}
 	}, [dispatch, history, userInfo, successDelete]);
 

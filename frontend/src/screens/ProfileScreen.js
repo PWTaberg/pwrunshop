@@ -34,11 +34,12 @@ function ProfileScreen({ location, history }) {
 	const { loading: loadingOrders, error: errorOrders, orders } = orderMyList;
 
 	useEffect(() => {
+		// if not logged in -> log in
 		if (!userInfo) {
 			history.push('/login');
 		} else {
 			// BUG FIX
-			if (!user.name || !user.name || success) {
+			if (!user || !user.name || success) {
 				// 'profile => /api/users/profile in getUserDetails
 
 				// BUG FIX

@@ -22,7 +22,9 @@ import {
 	orderCreateReducer,
 	orderDetailsReducer,
 	orderPayReducer,
+	orderDeliverReducer,
 	orderMyListReducer,
+	orderListReducer,
 } from './reducers/orderReducers';
 
 // Reducers
@@ -43,7 +45,9 @@ const reducer = combineReducers({
 	orderCreate: orderCreateReducer,
 	orderDetails: orderDetailsReducer,
 	orderPay: orderPayReducer,
+	orderDeliver: orderDeliverReducer,
 	orderMyList: orderMyListReducer,
+	orderList: orderListReducer,
 });
 
 // Get existing cart from local storage

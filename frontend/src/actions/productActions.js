@@ -15,17 +15,26 @@ import {
 	PRODUCT_UPDATE_REQUEST,
 	PRODUCT_UPDATE_SUCCESS,
 	PRODUCT_UPDATE_FAIL,
+	PRODUCT_CREATE_REVIEW_REQUEST,
+	PRODUCT_CREATE_REVIEW_SUCCESS,
+	PRODUCT_CREATE_REVIEW_FAIL,
 } from '../constants/productConstants';
 
 // Function within a function (redux-thunk)
-export const listProducts = () => async (dispatch) => {
+//export const listProducts = (keyword = '', pageNumber = '') => async (
+
+export const listProducts = (keyword = '', pageNumber = '') => async (
+	dispatch
+) => {
 	try {
 		// Send the request
 		dispatch({ type: PRODUCT_LIST_REQUEST });
-		// const { data } = await axios.get('/api/products');
 
-		/* Doing it in steps */
-		const productListResponse = await axios.get('/api/products');
+		console.log('keyword', keyword);
+
+		const productListResponse = await axios.get(
+			`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+		);
 		const { data } = productListResponse;
 
 		//	console.log('producrActions.productListRespone', productListResponse);
@@ -180,6 +189,45 @@ export const updateProduct = (product) => async (dispatch, getState) => {
 		// Request was a failure
 		dispatch({
 			type: PRODUCT_UPDATE_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+export const createProductReview = (productId, review) => async (
+	dispatch,
+	getState
+) => {
+	try {
+		dispatch({
+			type: PRODUCT_CREATE_REVIEW_REQUEST,
+		});
+
+		// testa bryta upp
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'Application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		await axios.post(`/api/products/${productId}/reviews`, review, config);
+
+		// get details
+		dispatch({
+			type: PRODUCT_CREATE_REVIEW_SUCCESS,
+		});
+	} catch (error) {
+		// Request was a failure
+		dispatch({
+			type: PRODUCT_CREATE_REVIEW_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

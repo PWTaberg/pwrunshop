@@ -70,7 +70,15 @@ const OrderScreen = ({ match, history }) => {
 				setSdkReady(true);
 			}
 		}
-	}, [dispatch, order, orderId, successPay, successDeliver]);
+	}, [
+		dispatch,
+		order,
+		orderId,
+		successPay,
+		successDeliver,
+		history,
+		userInfo,
+	]);
 
 	const successPaymentHandler = (paymentResult) => {
 		dispatch(payOrder(orderId, paymentResult));
@@ -127,7 +135,8 @@ const OrderScreen = ({ match, history }) => {
 							</p>
 							{order.isPaid ? (
 								<Message variant='success'>
-									Paid on {order.paidAt.substring(0, 10)}
+									Paid on {order.paidAt.substring(0, 10)}{' '}
+									{order.paidAt.substring(11, 16)}
 								</Message>
 							) : (
 								<Message variant='danger'>Not Paid </Message>

@@ -3,6 +3,8 @@ const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
+const morgan = require('morgan');
+
 // import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 const { notFound, errorHandler } = require('./middleware/errorMiddleware.js');
 const connectDB = require('./config/db.js');
@@ -16,6 +18,10 @@ dotenv.config();
 connectDB();
 
 const app = express();
+
+if (process.env.NODE_ENV === 'development') {
+	app.use(morgan('dev'));
+}
 
 app.use(express.json());
 

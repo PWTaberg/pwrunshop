@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { listOrders } from '../actions/orderActions';
-import { orderListReducer } from '../reducers/orderReducers';
+//import { orderListReducer } from '../reducers/orderReducers';
 
 const OrderListScreen = ({ history }) => {
 	const dispatch = useDispatch();

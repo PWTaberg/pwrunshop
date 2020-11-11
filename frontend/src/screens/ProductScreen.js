@@ -13,6 +13,7 @@ import {
 import Rating from '../components/Rating';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import Meta from '../components/Meta';
 
 import {
 	listProductDetails,
@@ -83,6 +84,7 @@ const ProductScreen = (props) => {
 				<Message variant='danger'>{error}</Message>
 			) : (
 				<>
+					<Meta title={product.name} />
 					<Row>
 						<Col m={6}>
 							<Image

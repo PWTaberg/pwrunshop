@@ -6,18 +6,18 @@ const Product = require('../models/productModel.js');
 // @access Public
 //const getProducts = asyncHandler(async (req,res) => {
 
+/*
 exports.getProducts = asyncHandler(async (req, res) => {
-	console.log('getProducts');
-
+	const products = await Product.find({});
+	res.json(products);
+});
+*/
+exports.getProducts = asyncHandler(async (req, res) => {
 	const pageSize = 4;
 	let page = 1;
 	if (req.query.pageNumber) {
-		console.log('pageNumber', req.query.pageNumber);
 		page = Number(req.query.pageNumber);
 	}
-
-	console.log('pageSize', pageSize);
-	console.log('page', page);
 
 	const keyword = req.query.keyword
 		? {
@@ -28,42 +28,12 @@ exports.getProducts = asyncHandler(async (req, res) => {
 		  }
 		: {};
 	const count = await Product.countDocuments({ ...keyword });
-	console.log('count', count);
 	const products = await Product.find({ ...keyword })
 		.limit(pageSize)
 		.skip(pageSize * (page - 1));
 
 	res.json({ products, page, pages: Math.ceil(count / pageSize) });
-
-	// res.json(products);
 });
-/*	
-exports.getProducts = asyncHandler(async (req, res) => {
-	const keyword = req.query.keyword
-		? {
-				name: {
-					$regex: req.query.keyword,
-					$options: 'i',
-				},
-		  }
-		: {};
-
-	console.log('getProducts keyword', keyword, ' page ', page);
-
-	//const count = await Product.count({ ...keyword });
-	//const products = await Product.find({ ...keyword });
-	const products = await Product.find({});
-
-	
-	const products = await Product.find({ ...keyword })
-		.limit(pageSize)
-		.skip(pageSize * (page - 1));
-		
-
-	//res.json({ products, page, pages: Math.ceil(count / pageSize) });
-	res.json(products);
-});
-*/
 
 // @desc Fetch single product
 // @route GET /api/products/:id
@@ -71,11 +41,6 @@ exports.getProducts = asyncHandler(async (req, res) => {
 //const getProductsById = asyncHandler(async (req,res) => {
 exports.getProductById = asyncHandler(async (req, res) => {
 	const product = await Product.findById(req.params.id);
-
-	/* simulate error 
-	res.status(404);
-	throw new Error('Hej Anton, Product not found !');
-	*/
 
 	if (product) {
 		res.json(product);
@@ -196,6 +161,16 @@ exports.createProductReview = asyncHandler(async (req, res) => {
 		throw new Error('Product not found');
 	}
 });
+
+// @desc  Get top rated
+// @route GET /api/products/top
+// @access Puplic
+//const updateProducr = asyncHandler(async (req,res) => {
+exports.getTopProducts = asyncHandler(async (req, res) => {
+	const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+	res.json(products);
+});
+
 /*
 exports {
   getProducts,

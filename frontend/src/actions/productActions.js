@@ -18,6 +18,9 @@ import {
 	PRODUCT_CREATE_REVIEW_REQUEST,
 	PRODUCT_CREATE_REVIEW_SUCCESS,
 	PRODUCT_CREATE_REVIEW_FAIL,
+	PRODUCT_TOP_REQUEST,
+	PRODUCT_TOP_SUCCESS,
+	PRODUCT_TOP_FAIL,
 } from '../constants/productConstants';
 
 // Function within a function (redux-thunk)
@@ -29,8 +32,6 @@ export const listProducts = (keyword = '', pageNumber = '') => async (
 	try {
 		// Send the request
 		dispatch({ type: PRODUCT_LIST_REQUEST });
-
-		console.log('keyword', keyword);
 
 		const productListResponse = await axios.get(
 			`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
@@ -228,6 +229,36 @@ export const createProductReview = (productId, review) => async (
 		// Request was a failure
 		dispatch({
 			type: PRODUCT_CREATE_REVIEW_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+// Function within a function (redux-thunk)
+//export const listProducts = (keyword = '', pageNumber = '') => async (
+
+export const listTopProducts = () => async (dispatch) => {
+	try {
+		// Send the request
+		dispatch({ type: PRODUCT_TOP_REQUEST });
+
+		const { data } = await axios.get(`/api/products/top`);
+
+		//	console.log('producrActions.productListRespone', productListResponse);
+		//	console.log('data', data);
+		/* ** */
+
+		// Request was success
+		dispatch({
+			type: PRODUCT_TOP_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		// Request was a failure
+		dispatch({
+			type: PRODUCT_TOP_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message

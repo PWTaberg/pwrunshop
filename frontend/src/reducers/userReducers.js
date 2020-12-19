@@ -59,9 +59,9 @@ export const userRegisterReducer = (state = {}, action) => {
 export const userDetailsReducer = (state = { user: {} }, action) => {
 	switch (action.type) {
 		case USER_DETAILS_REQUEST:
-			return { ...state, loading: true };
+			return { loading: true };
 		case USER_DETAILS_SUCCESS:
-			return { loading: false, user: action.payload };
+			return { loading: false, user: action.payload, success: true };
 		case USER_DETAILS_FAIL:
 			return { loading: false, error: action.payload };
 		case USER_DETAILS_RESET:
@@ -93,7 +93,12 @@ export const userListReducer = (state = { users: [] }, action) => {
 		case USER_LIST_REQUEST:
 			return { loading: true };
 		case USER_LIST_SUCCESS:
-			return { loading: false, users: action.payload };
+			return {
+				loading: false,
+				users: action.payload.users,
+				pages: action.payload.pages,
+				page: action.payload.page,
+			};
 		case USER_LIST_FAIL:
 			return { loading: false, error: action.payload };
 		case USER_LIST_RESET:

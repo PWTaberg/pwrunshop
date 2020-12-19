@@ -67,20 +67,25 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
 // Get existing shipping address from local storage
 const shippingAddressFromStorage = localStorage.getItem('shippingAddress')
 	? JSON.parse(localStorage.getItem('shippingAddress'))
-	: {};
+	: { address: '', city: '', postalCode: '', country: '' };
 
 // Get existing payment method from local storage
 const paymentMethodFromStorage = localStorage.getItem('paymentMethod')
 	? JSON.parse(localStorage.getItem('paymentMethod'))
-	: 'PayPal';
+	: '';
 
-//console.log('store.paymentMethodFromStorage', paymentMethodFromStorage);
+const checkoutButtonSelectedFromStorage = localStorage.getItem(
+	'checkoutButtonSelected'
+)
+	? JSON.parse(localStorage.getItem('checkoutButtonSelected'))
+	: false;
 
 const initialState = {
 	cart: {
 		cartItems: cartItemsFromStorage,
 		shippingAddress: shippingAddressFromStorage,
 		paymentMethod: paymentMethodFromStorage,
+		checkoutButtonSelected: checkoutButtonSelectedFromStorage,
 	},
 	userLogin: { userInfo: userInfoFromStorage },
 };

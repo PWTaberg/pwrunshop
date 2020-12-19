@@ -49,7 +49,7 @@ const ProductListScreen = ({ history, match }) => {
 		if (successCreate) {
 			history.push(`/admin/product/${createdProduct._id}/edit`);
 		} else {
-			dispatch(listProducts('', pageNumber));
+			dispatch(listProducts('', pageNumber, '6'));
 		}
 	}, [
 		dispatch,
@@ -144,7 +144,12 @@ const ProductListScreen = ({ history, match }) => {
 							))}
 						</tbody>
 					</Table>
-					<Paginate pages={pages} page={page} isAdmin={true} />
+					<Paginate
+						pages={pages}
+						page={page}
+						isAdmin={true}
+						subdirectory='/productlist'
+					/>
 				</>
 			)}
 		</>

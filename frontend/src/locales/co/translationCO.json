@@ -1,0 +1,22 @@
+{
+	"addToCart": "Añadir al carrito",
+	"comment": "Comentario",
+	"description": "Descripción",
+	"excellent": "5 - Excelente",
+	"fair": "2 - OK",
+	"goBack": "Regresa",
+	"good": "3 - Bueno",
+	"greeting": "Bienvenido á Runners Shop",
+	"inStock": "En Stock",
+	"latestProducts": "Últimos Productos",
+	"noReviews": "Sin Reseñas",
+	"outOfStock": "Agotado",
+	"poor": "1 - Mal",
+	"price": "Precio",
+	"rating": "Clasificación",
+	"reviews": "reseñas",
+	"select": "Seleccione ...",
+	"submit": "Envia",
+	"veryGood": "4 - Muy Bueno",
+	"writeACustomerReview": "Escribe una reseña"
+}

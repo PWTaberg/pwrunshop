@@ -9,6 +9,45 @@ import { createOrder } from '../actions/orderActions';
 const PlaceOrderScreen = ({ history }) => {
 	const dispatch = useDispatch();
 	const cart = useSelector((state) => state.cart);
+	const {
+		shippingAddress,
+		cartItems,
+		paymentMethod,
+		checkoutButtonSelected,
+	} = cart;
+
+	let redirectPage;
+	if (cartItems.length === 0) {
+		redirectPage = '/cart';
+	}
+
+	if (!redirectPage && checkoutButtonSelected === false) {
+		redirectPage = '/cart';
+	}
+
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
+
+	if (!redirectPage && !userInfo) {
+		redirectPage = '/login';
+	}
+
+	if (
+		!redirectPage &&
+		(!shippingAddress ||
+			!shippingAddress.address ||
+			shippingAddress.address === '')
+	) {
+		redirectPage = '/shipping';
+	}
+
+	if (!redirectPage && paymentMethod === '') {
+		redirectPage = '/payment';
+	}
+
+	if (redirectPage) {
+		history.push(redirectPage);
+	}
 
 	// Calculate prices
 	cart.itemsPrice = cart.cartItems

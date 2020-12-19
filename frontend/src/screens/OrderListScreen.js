@@ -4,26 +4,30 @@ import { Table, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import Paginate from '../components/Paginate';
 import { listOrders } from '../actions/orderActions';
+
 //import { orderListReducer } from '../reducers/orderReducers';
 
-const OrderListScreen = ({ history }) => {
+const OrderListScreen = ({ history, match }) => {
+	const pageNumber = match.params.pageNumber || 1;
+
 	const dispatch = useDispatch();
 
 	const orderList = useSelector((state) => state.orderList);
-	const { loading, error, orders } = orderList;
+	const { loading, error, orders, pages, page } = orderList;
 
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
 
 	useEffect(() => {
 		if (userInfo && userInfo.isAdmin) {
-			dispatch(listOrders());
+			dispatch(listOrders(pageNumber, '2'));
 		} else {
 			// Maybe wrong: was /login
 			history.push('/login');
 		}
-	}, [dispatch, history, userInfo]);
+	}, [dispatch, history, userInfo, pageNumber]);
 
 	return (
 		<>
@@ -87,6 +91,12 @@ const OrderListScreen = ({ history }) => {
 					</tbody>
 				</Table>
 			)}
+			<Paginate
+				pages={pages}
+				page={page}
+				isAdmin={true}
+				subdirectory='/orderlist'
+			/>
 		</>
 	);
 };

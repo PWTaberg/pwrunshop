@@ -39,6 +39,8 @@ function ProductEditScreen({ match, history }) {
 	useEffect(() => {
 		if (successUpdate) {
 			dispatch({ type: PRODUCT_UPDATE_RESET });
+			dispatch(listProductDetails(productId));
+
 			history.push('/admin/productList');
 		} else {
 			if (!product.name || product._id !== productId) {
@@ -46,6 +48,7 @@ function ProductEditScreen({ match, history }) {
 				dispatch(listProductDetails(productId));
 			} else {
 				// We  have the product
+
 				setName(product.name);
 				setPrice(product.price);
 				setImage(product.image);
@@ -71,6 +74,7 @@ function ProductEditScreen({ match, history }) {
 				description,
 			})
 		);
+
 		dispatch({ type: PRODUCT_DETAILS_RESET });
 	};
 	const uploadFileHandler = async (e) => {

@@ -11,7 +11,12 @@ import {
 	Card,
 } from 'react-bootstrap';
 import Message from '../components/Message';
-import { addToCart, removeFromCart } from '../actions/cartActions';
+import {
+	addToCart,
+	removeFromCart,
+	saveCheckoutButtonSelected,
+} from '../actions/cartActions';
+import { CART_RESET } from '../constants/cartConstants';
 
 const CartScreen = ({ match, location, history }) => {
 	const productId = match.params.id;
@@ -38,7 +43,13 @@ const CartScreen = ({ match, location, history }) => {
 	};
 
 	const checkOutHandler = () => {
+		dispatch(saveCheckoutButtonSelected());
 		history.push('/login?redirect=shipping');
+	};
+
+	const clearAllHandler = () => {
+		dispatch({ type: CART_RESET });
+		history.push('/cart');
 	};
 
 	return (
@@ -118,34 +129,47 @@ const CartScreen = ({ match, location, history }) => {
 			</Col>
 			<Col md={4}>
 				<Card>
-					<ListGroup.Item variant='flush'>
-						<h2>
-							Subtotal (
-							{cartItems.reduce(
-								(acc, cartItem) => acc + cartItem.qty,
-								0
-							)}
-							) items
-						</h2>
-						$
-						{cartItems
-							.reduce(
-								(acc, cartItem) =>
-									acc + cartItem.price * cartItem.qty,
-								0
-							)
-							.toFixed(2)}
-					</ListGroup.Item>
-					<ListGroup.Item>
-						<Button
-							type='button'
-							className='btn-block'
-							disabled={cartItems.length === 0}
-							onClick={checkOutHandler}
-						>
-							Proceed to Checkout
-						</Button>
-					</ListGroup.Item>
+					<ListGroup variant='flush'>
+						<ListGroup.Item>
+							<h2>
+								Subtotal (
+								{cartItems.reduce(
+									(acc, cartItem) => acc + cartItem.qty,
+									0
+								)}
+								) items
+							</h2>
+							$
+							{cartItems
+								.reduce(
+									(acc, cartItem) =>
+										acc + cartItem.price * cartItem.qty,
+									0
+								)
+								.toFixed(2)}
+						</ListGroup.Item>
+						<ListGroup.Item>
+							<Button
+								type='button'
+								className='btn-block'
+								disabled={cartItems.length === 0}
+								onClick={checkOutHandler}
+							>
+								Proceed to Checkout
+							</Button>
+						</ListGroup.Item>
+						<ListGroup.Item>
+							<Button
+								type='button'
+								className='btn-block'
+								variant='danger'
+								disabled={cartItems.length === 0}
+								onClick={clearAllHandler}
+							>
+								Clear All
+							</Button>
+						</ListGroup.Item>
+					</ListGroup>
 				</Card>
 			</Col>
 		</Row>

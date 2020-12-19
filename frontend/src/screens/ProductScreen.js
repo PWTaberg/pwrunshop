@@ -14,6 +14,7 @@ import Rating from '../components/Rating';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Meta from '../components/Meta';
+import { useTranslation } from 'react-i18next';
 
 import {
 	listProductDetails,
@@ -25,9 +26,7 @@ import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants';
 const ProductScreen = (props) => {
 	const { history, match } = props;
 
-	//console.log('ProductScreen.props: ', props);
-	//console.log('match.params.id', match.params.id);
-
+	const { t } = useTranslation();
 	const [qty, setQty] = useState(1);
 
 	const [rating, setRating] = useState(0);
@@ -76,7 +75,7 @@ const ProductScreen = (props) => {
 	return (
 		<>
 			<Link className='btn btn-light my-3' to='/'>
-				Go Back
+				{t('goBack')}
 			</Link>
 			{loading ? (
 				<Loader />
@@ -101,14 +100,16 @@ const ProductScreen = (props) => {
 								<ListGroup.Item>
 									<Rating
 										value={product.rating}
-										text={`${product.numReviews} reviews`}
+										text={`${product.numReviews} ${t(
+											'reviews'
+										)}`}
 									/>
 								</ListGroup.Item>
 								<ListGroup.Item>
-									Price: ${product.price}
+									{t('price')}: {product.price} SEK
 								</ListGroup.Item>
 								<ListGroup.Item>
-									Description: s{product.description}
+									{t('description')}: {product.description}
 								</ListGroup.Item>
 							</ListGroup>
 						</Col>
@@ -130,8 +131,8 @@ const ProductScreen = (props) => {
 											<Col>Status:</Col>
 											<Col>
 												{product.countInStock > 0
-													? 'In Stock'
-													: 'Out of Stock'}
+													? `${t('outOfStock')}`
+													: `${t('inStock')}`}
 											</Col>
 										</Row>
 									</ListGroup.Item>
@@ -178,7 +179,7 @@ const ProductScreen = (props) => {
 												product.countInStock === 0
 											}
 										>
-											Add to Cart
+											{t('addToCart')}
 										</Button>
 									</ListGroup.Item>
 								</ListGroup>
@@ -187,9 +188,9 @@ const ProductScreen = (props) => {
 					</Row>
 					<Row>
 						<Col md={6}>
-							<h2>Reviews</h2>
+							<h2>{t('reviews')}</h2>
 							{product.reviews.length === 0 && (
-								<Message>No Reviews</Message>
+								<Message>{t('noReviews')}</Message>
 							)}
 							<ListGroup variant='flush'>
 								{product.reviews.map((review) => (
@@ -197,7 +198,9 @@ const ProductScreen = (props) => {
 										<strong>{review.name}</strong>
 										<Rating
 											value={review.rating}
-											text={`${product.numReviews} reviews`}
+											text={`${product.numReviews} ${t(
+												'reviews'
+											)}`}
 										/>
 										<p>
 											{review.createdAt.substring(0, 10)}
@@ -206,7 +209,7 @@ const ProductScreen = (props) => {
 									</ListGroup.Item>
 								))}
 								<ListGroup.Item>
-									<h2>Write a Customer Review</h2>
+									<h2>{t('writeACustomerReview')}</h2>
 									{errorProductReview && (
 										<Message variant='danger'>
 											{errorProductReview}
@@ -215,7 +218,9 @@ const ProductScreen = (props) => {
 									{userInfo ? (
 										<Form onSubmit={submitHandler}>
 											<Form.Group controlId='rating'>
-												<Form.Label>Rating</Form.Label>
+												<Form.Label>
+													{t('rating')}
+												</Form.Label>
 												<Form.Control
 													as='select'
 													value={rating}
@@ -226,27 +231,29 @@ const ProductScreen = (props) => {
 													}
 												>
 													<option value=''>
-														Select ...
+														{t('select')}
 													</option>
 													<option value='1'>
-														1 - Poor
+														{t('poor')}
 													</option>
 													<option value='2'>
-														2 - Fair
+														{t('fair')}
 													</option>
 													<option value='3'>
-														3 - Good
+														{t('good')}
 													</option>
 													<option value='4'>
-														4 - Very Good
+														{t('veryGood')}
 													</option>
 													<option value='5'>
-														5 - Excellent
+														{t('excellent')}
 													</option>
 												</Form.Control>
 											</Form.Group>
 											<Form.Group controlId='comment'>
-												<Form.Label>Comment</Form.Label>
+												<Form.Label>
+													{t('comment')}
+												</Form.Label>
 												<Form.Control
 													as='textarea'
 													row='3'
@@ -262,7 +269,7 @@ const ProductScreen = (props) => {
 												type='submit'
 												variant='primary'
 											>
-												Submit
+												{t('submit')}
 											</Button>
 										</Form>
 									) : (

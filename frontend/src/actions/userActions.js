@@ -14,6 +14,7 @@ import {
 	USER_UPDATE_PROFILE_REQUEST,
 	USER_UPDATE_PROFILE_SUCCESS,
 	USER_UPDATE_PROFILE_FAIL,
+	USER_UPDATE_PROFILE_RESET,
 	USER_LIST_REQUEST,
 	USER_LIST_SUCCESS,
 	USER_LIST_FAIL,
@@ -33,6 +34,12 @@ import {
 	//CART_REMOVE_PAYMENT_METHOD,
 	CART_RESET,
 } from '../constants/cartConstants';
+
+import {
+	SHIPPING_ADDRESS,
+	PAYMENT_METHOD,
+	USER_INFO,
+} from '../constants/localStoreConstants';
 
 export const login = (email, password) => async (dispatch) => {
 	try {
@@ -57,7 +64,7 @@ export const login = (email, password) => async (dispatch) => {
 			payload: data,
 		});
 
-		localStorage.setItem('userInfo', JSON.stringify(data));
+		localStorage.setItem(USER_INFO, JSON.stringify(data));
 	} catch (error) {
 		// Request was a failure
 		dispatch({
@@ -71,13 +78,15 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-	localStorage.removeItem('userInfo');
+	localStorage.removeItem(USER_INFO);
+	localStorage.removeItem(SHIPPING_ADDRESS);
+	localStorage.removeItem(PAYMENT_METHOD);
+
 	dispatch({ type: USER_LOGOUT });
 	dispatch({ type: USER_DETAILS_RESET });
 	dispatch({ type: USER_LIST_RESET });
 	dispatch({ type: ORDER_MY_LIST_RESET });
 	dispatch({ type: CART_REMOVE_SHIPPING_ADDRESS });
-	//dispatch({ type: CART_REMOVE_PAYMENT_METHOD });
 	dispatch({ type: CART_RESET });
 };
 
@@ -154,6 +163,8 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 			type: USER_DETAILS_SUCCESS,
 			payload: data,
 		});
+		// BUG FIX - MESSAGE WILL BE REMOVED AFTER SUCCESS
+		dispatch({ type: USER_UPDATE_PROFILE_RESET });
 	} catch (error) {
 		// Request was a failure
 		dispatch({
@@ -212,7 +223,10 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 	}
 };
 
-export const listUsers = () => async (dispatch, getState) => {
+export const listUsers = (pageNumber = '', pageSize = '4') => async (
+	dispatch,
+	getState
+) => {
 	try {
 		dispatch({
 			type: USER_LIST_REQUEST,
@@ -229,7 +243,10 @@ export const listUsers = () => async (dispatch, getState) => {
 			},
 		};
 
-		const { data } = await axios.get(`/api/users`, config);
+		const { data } = await axios.get(
+			`/api/users?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+			config
+		);
 
 		dispatch({
 			type: USER_LIST_SUCCESS,

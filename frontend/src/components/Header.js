@@ -1,18 +1,35 @@
 import React from 'react';
+//import '../i18n';
 import { Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import SearchBox from './SearchBox';
 import { logout } from '../actions/userActions';
+//import i18n from '../i18n';
+import { useTranslation } from 'react-i18next';
+import ReactCountryFlag from 'react-country-flag';
+//import i18n from '../i18n';
 
 const Header = () => {
+	const { i18n } = useTranslation();
 	const dispatch = useDispatch();
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
+
 	const logoutHandler = () => {
 		dispatch(logout());
 	};
+	/*
+	const changeLanguage = (ln) => {
+		//	console.log('new language', ln);
+
+		return () => {
+			console.log('change to ', ln);
+			//i18n.changeLanguage(ln);
+		};
+	};
+	*/
 	return (
 		<header>
 			<Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
@@ -76,6 +93,48 @@ const Header = () => {
 									</LinkContainer>
 								</NavDropdown>
 							)}
+							<NavDropdown title='Language' id='languageMenu'>
+								<NavDropdown.Item
+									onClick={() => i18n.changeLanguage('en')}
+								>
+									<ReactCountryFlag
+										countryCode='US'
+										svg
+										style={{
+											width: '2em',
+											height: '2em',
+										}}
+										title='US'
+									/>
+								</NavDropdown.Item>
+
+								<NavDropdown.Item
+									onClick={() => i18n.changeLanguage('sv')}
+								>
+									<ReactCountryFlag
+										countryCode='SE'
+										svg
+										style={{
+											width: '2em',
+											height: '2em',
+										}}
+										title='SE'
+									/>
+								</NavDropdown.Item>
+								<NavDropdown.Item
+									onClick={() => i18n.changeLanguage('co')}
+								>
+									<ReactCountryFlag
+										countryCode='CO'
+										svg
+										style={{
+											width: '2em',
+											height: '2em',
+										}}
+										title='CO'
+									/>
+								</NavDropdown.Item>
+							</NavDropdown>
 						</Nav>
 					</Navbar.Collapse>
 				</Container>

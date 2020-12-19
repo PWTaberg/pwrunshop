@@ -4,12 +4,15 @@ import {
 	CART_REMOVE_ITEM,
 	CART_SAVE_SHIPPING_ADDRESS,
 	CART_SAVE_PAYMENT_METHOD,
+	CART_SAVE_CHECKOUT_BUTTON_SELECTED,
+	CART_REDIRECT_TO,
 } from '../constants/cartConstants';
 
 import {
 	CART_ITEMS,
 	SHIPPING_ADDRESS,
 	PAYMENT_METHOD,
+	CHECKOUT_BUTTON_SELECTED,
 } from '../constants/localStoreConstants';
 
 export const addToCart = (id, qty) => async (dispatch, getState) => {
@@ -26,10 +29,7 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
 		},
 	});
 
-	localStorage.setItem(
-		'cartItems',
-		JSON.stringify(getState().cart.cartItems)
-	);
+	localStorage.setItem(CART_ITEMS, JSON.stringify(getState().cart.cartItems));
 };
 
 export const removeFromCart = (id) => (dispatch, getState) => {
@@ -58,4 +58,21 @@ export const savePaymentMethod = (data) => (dispatch) => {
 
 	// paymentMethod: 'PayPal'
 	localStorage.setItem(PAYMENT_METHOD, JSON.stringify(data));
+};
+
+export const saveCheckoutButtonSelected = () => (dispatch) => {
+	dispatch({
+		type: CART_SAVE_CHECKOUT_BUTTON_SELECTED,
+	});
+
+	localStorage.setItem(CHECKOUT_BUTTON_SELECTED, JSON.stringify(true));
+};
+
+export const redirectToPage = (page) => (dispatch) => {
+	dispatch({
+		type: CART_REDIRECT_TO,
+		payload: page,
+	});
+
+	localStorage.setItem(CHECKOUT_BUTTON_SELECTED, JSON.stringify(true));
 };

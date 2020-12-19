@@ -31,7 +31,7 @@ function UserEditScreen({ match, history }) {
 			dispatch({ type: USER_UPDATE_RESET });
 			history.push('/admin/userlist');
 		} else {
-			if (!user.name || user._id !== userId) {
+			if ((!user && !user.name) || user._id !== userId) {
 				// We don't have the user, get the user
 				dispatch(getUserDetails(userId));
 			} else {
@@ -46,6 +46,7 @@ function UserEditScreen({ match, history }) {
 	const submitHandler = (e) => {
 		e.preventDefault();
 		dispatch(updateUser({ _id: userId, name, email, isAdmin }));
+		dispatch(getUserDetails(userId));
 	};
 
 	return (

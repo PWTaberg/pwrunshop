@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+//import '../i18n';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
@@ -7,17 +8,20 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import Meta from '../components/Meta';
+import { useTranslation } from 'react-i18next';
 
 import ProductCarousel from '../components/ProductCarousel';
 
 import { listProducts } from '../actions/productActions';
 
-const HomeScreen = ({ match }) => {
+const HomeScreen = (props) => {
+	const { match } = props;
+	const { t } = useTranslation();
+	//i18n.changeLanguage('sv');
 	const keyword = match.params.keyword;
 
 	const pageNumber = match.params.pageNumber || 1;
 
-	// console.log('HomeScreen.props', props);
 	const dispatch = useDispatch();
 
 	const productList = useSelector((state) => state.productList);
@@ -49,7 +53,7 @@ const HomeScreen = ({ match }) => {
 					Go Back
 				</Link>
 			)}
-			<h1>Latest Products</h1>
+			<h1>{t('latestProducts')}</h1>
 			{loading ? (
 				<Loader />
 			) : error ? (
@@ -67,6 +71,7 @@ const HomeScreen = ({ match }) => {
 						pages={pages}
 						page={page}
 						keyword={keyword ? keyword : ''}
+						subdirectory='/page'
 					/>
 				</>
 			)}

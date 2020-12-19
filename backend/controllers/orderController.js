@@ -90,8 +90,26 @@ exports.updateOrderToPaid = asyncHandler(async (req, res) => {
 //const updateOrderToPaid = asyncHandler(async (req,res) => {
 
 exports.getMyOrders = asyncHandler(async (req, res) => {
-	const orders = await Order.find({ user: req.user._id });
-	res.json(orders);
+	let pageSize = 4;
+	if (req.query.pageSize) {
+		pageSize = Number(req.query.pageSize);
+	}
+
+	let page = 1;
+	if (req.query.pageNumber) {
+		page = Number(req.query.pageNumber);
+	}
+
+	const count = await Order.countDocuments({ user: req.user._id });
+
+	const orders = await Order.find({ user: req.user._id })
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+
+	res.json({ orders, page, pages: Math.ceil(count / pageSize) });
+
+	// const orders = await Order.find({ user: req.user._id });
+	// res.json(orders);
 });
 
 // @desc Get all user orders
@@ -100,8 +118,27 @@ exports.getMyOrders = asyncHandler(async (req, res) => {
 //const updateOrderToPaid = asyncHandler(async (req,res) => {
 
 exports.getOrders = asyncHandler(async (req, res) => {
-	const orders = await Order.find({}).populate('user', 'id name');
-	res.json(orders);
+	let pageSize = 4;
+	if (req.query.pageSize) {
+		pageSize = Number(req.query.pageSize);
+	}
+
+	let page = 1;
+	if (req.query.pageNumber) {
+		page = Number(req.query.pageNumber);
+	}
+
+	const count = await Order.countDocuments({});
+
+	const orders = await Order.find({})
+		.populate('user', 'id name')
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+
+	res.json({ orders, page, pages: Math.ceil(count / pageSize) });
+
+	// const orders = await Order.find({}).populate('user', 'id name');
+	// res.json(orders);
 });
 
 // @desc Update order to deliverd
@@ -110,7 +147,6 @@ exports.getOrders = asyncHandler(async (req, res) => {
 //const updateOrderToPaid = asyncHandler(async (req,res) => {
 
 exports.updateOrderToDelivered = asyncHandler(async (req, res) => {
-	console.log('updateOrderToDelivers');
 	const order = await Order.findById(req.params.id);
 
 	if (order) {

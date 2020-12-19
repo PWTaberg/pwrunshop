@@ -1,6 +1,28 @@
 const asyncHandler = require('express-async-handler');
 const { generateToken } = require('../utils/generateToken.js');
 const User = require('../models/userModel.js');
+const emailValidator = require('email-validator');
+const passwordValidator = require('password-validator');
+
+// password validator
+const passwordValidated = (password) => {
+	const schema = new passwordValidator();
+
+	const validation = schema
+		.is()
+		.min(6)
+		.is()
+		.max(12)
+		.has()
+		.uppercase()
+		.has()
+		.lowercase()
+		.digits(1)
+		.not()
+		.spaces()
+		.validate(password);
+	return validation;
+};
 
 // @desc Auth user & get token
 // @route POST /api/users/login
@@ -35,6 +57,17 @@ exports.authUser = asyncHandler(async (req, res) => {
 
 exports.registerUser = asyncHandler(async (req, res) => {
 	const { name, email, password } = req.body;
+
+	// Check that email format is OK
+	if (!email || emailValidator.validate(email) === false) {
+		res.status(400);
+		throw new Error('Invalid email format');
+	}
+	// Check that password format is OK
+	if (!password || !passwordValidated(password)) {
+		res.status(400);
+		throw new Error('Invalid password format');
+	}
 
 	const userExists = await User.findOne({ email });
 
@@ -92,6 +125,19 @@ exports.getUserProfile = asyncHandler(async (req, res) => {
 //const updateUserProfile = asyncHandler(async (req,res) => {
 
 exports.updateUserProfile = asyncHandler(async (req, res) => {
+	// Validate email
+	// Check that email format is OK
+	if (req.body.email && emailValidator.validate(req.body.email) === false) {
+		res.status(400);
+		throw new Error('Invalid email');
+	}
+
+	// Check that password format is OK
+	if (req.body.password && !passwordValidated(req.body.password)) {
+		res.status(400);
+		throw new Error('Invalid password format');
+	}
+
 	const user = await User.findById(req.user._id);
 
 	if (user) {
@@ -127,9 +173,27 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
 //const getUser = asyncHandler(async (req,res) => {
 
 exports.getUsers = asyncHandler(async (req, res) => {
-	const users = await User.find({});
+	let pageSize = 4;
+	if (req.query.pageSize) {
+		pageSize = Number(req.query.pageSize);
+	}
 
-	res.json(users);
+	let page = 1;
+	if (req.query.pageNumber) {
+		page = Number(req.query.pageNumber);
+	}
+
+	const count = await User.countDocuments({});
+
+	const users = await User.find({})
+		.limit(pageSize)
+		.skip(pageSize * (page - 1));
+
+	res.json({ users, page, pages: Math.ceil(count / pageSize) });
+
+	//const users = await User.find({});
+
+	//res.json(users);
 });
 
 // @desc Delete a user
@@ -174,6 +238,19 @@ exports.getUserById = asyncHandler(async (req, res) => {
 //const updateUserProfile = asyncHandler(async (req,res) => {
 
 exports.updateUser = asyncHandler(async (req, res) => {
+	// Validate email
+	// Check that email format is OK
+	if (req.body.email && emailValidator.validate(req.body.email) === false) {
+		res.status(400);
+		throw new Error('Invalid email');
+	}
+
+	// Check that password format is OK
+	if (req.body.password && !passwordValidated(req.body.password)) {
+		res.status(400);
+		throw new Error('Invalid password format');
+	}
+
 	const user = await User.findById(req.params.id);
 
 	if (user) {

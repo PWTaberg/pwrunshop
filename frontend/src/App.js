@@ -1,4 +1,5 @@
 import React from 'react';
+import './i18n';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import Header from './components/Header';
@@ -31,11 +32,26 @@ const App = () => {
 					<Route path='/placeorder' component={PlaceOrderScreen} />
 					<Route path='/login' component={LoginScreen} />
 					<Route path='/register' component={RegisterScreen} />
-					<Route path='/profile' component={ProfileScreen} />
+					<Route
+						path='/profile/:pageNumber'
+						component={ProfileScreen}
+					/>
+
+					<Route path='/profile' component={ProfileScreen} exact />
+
 					<Route path='/product/:id' component={ProductScreen} />
 					<Route path='/cart/:id?' component={CartScreen} />
 
-					<Route path='/admin/userlist' component={UserListScreen} />
+					<Route
+						path='/admin/userlist/:pageNumber'
+						component={UserListScreen}
+					/>
+
+					<Route
+						path='/admin/userlist'
+						component={UserListScreen}
+						exact
+					/>
 					<Route
 						path='/admin/productlist'
 						component={ProductListScreen}
@@ -55,8 +71,13 @@ const App = () => {
 						component={ProductEditScreen}
 					/>
 					<Route
+						path='/admin/orderlist/:pageNumber'
+						component={OrderListScreen}
+					/>
+					<Route
 						path='/admin/orderlist'
 						component={OrderListScreen}
+						exact
 					/>
 					<Route
 						path='/search/:keyword'

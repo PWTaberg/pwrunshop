@@ -7,7 +7,27 @@ import { saveShippingAddress } from '../actions/cartActions';
 
 const ShippingScreen = ({ history }) => {
 	const cart = useSelector((state) => state.cart);
-	const { shippingAddress } = cart;
+	const { shippingAddress, cartItems, checkoutButtonSelected } = cart;
+
+	let redirectPage = null;
+	if (cartItems.length === 0) {
+		redirectPage = '/cart';
+	}
+
+	if (!redirectPage && checkoutButtonSelected === false) {
+		redirectPage = '/cart';
+	}
+
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
+
+	if (!redirectPage && !userInfo) {
+		redirectPage = '/login';
+	}
+
+	if (redirectPage) {
+		history.push(redirectPage);
+	}
 
 	const [address, setAddress] = useState(shippingAddress.address);
 	const [city, setCity] = useState(shippingAddress.city);
@@ -21,6 +41,7 @@ const ShippingScreen = ({ history }) => {
 		dispatch(saveShippingAddress({ address, city, postalCode, country }));
 		history.push('/payment');
 	};
+
 	return (
 		<FormContainer>
 			<CheckoutSteps step1 step2 />

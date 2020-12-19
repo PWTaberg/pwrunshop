@@ -4,13 +4,17 @@ import { Table, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import Paginate from '../components/Paginate';
+
 import { listUsers, deleteUser } from '../actions/userActions';
 
-const UserListScreen = ({ history }) => {
+const UserListScreen = ({ history, match }) => {
+	const pageNumber = match.params.pageNumber || 1;
+
 	const dispatch = useDispatch();
 
 	const userList = useSelector((state) => state.userList);
-	const { loading, error, users } = userList;
+	const { loading, error, users, pages, page } = userList;
 
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
@@ -20,12 +24,12 @@ const UserListScreen = ({ history }) => {
 
 	useEffect(() => {
 		if (userInfo && userInfo.isAdmin) {
-			dispatch(listUsers());
+			dispatch(listUsers(pageNumber, '2'));
 		} else {
 			// Maybe wrong: was /login
 			history.push('/login');
 		}
-	}, [dispatch, history, userInfo, successDelete]);
+	}, [dispatch, history, userInfo, successDelete, pageNumber]);
 
 	const deleteHandler = (id) => {
 		if (window.confirm('Are you sure ?')) {
@@ -97,6 +101,12 @@ const UserListScreen = ({ history }) => {
 					</tbody>
 				</Table>
 			)}
+			<Paginate
+				pages={pages}
+				page={page}
+				isAdmin={true}
+				subdirectory='/userlist'
+			/>
 		</>
 	);
 };

@@ -4,14 +4,17 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import Paginate from '../components/Paginate';
 
 import { getUserDetails, updateUserProfile } from '../actions/userActions';
 import { listMyOrders } from '../actions/orderActions';
 
 // BUG FIX
-import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants';
+//import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants';
 
-function ProfileScreen({ location, history }) {
+function ProfileScreen({ location, history, match }) {
+	const pageNumber = match.params.pageNumber || 1;
+
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -21,17 +24,23 @@ function ProfileScreen({ location, history }) {
 	const dispatch = useDispatch();
 
 	const userDetails = useSelector((state) => state.userDetails);
-	const { loading, error, user } = userDetails;
+	const { loading, user } = userDetails;
 
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
 
 	// BUG FIX - make sure success is included
 	const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-	const { success } = userUpdateProfile;
+	const { success: updateSuccess, error: updateError } = userUpdateProfile;
 
 	const orderMyList = useSelector((state) => state.orderMyList);
-	const { loading: loadingOrders, error: errorOrders, orders } = orderMyList;
+	const {
+		loading: loadingOrders,
+		error: errorOrders,
+		orders,
+		pages,
+		page,
+	} = orderMyList;
 
 	useEffect(() => {
 		// if not logged in -> log in
@@ -39,26 +48,53 @@ function ProfileScreen({ location, history }) {
 			history.push('/login');
 		} else {
 			// BUG FIX
-			if (!user || !user.name || success) {
+			// if (!user || !user.name || success)
+
+			if (!user || !user.name || updateSuccess) {
 				// 'profile => /api/users/profile in getUserDetails
 
 				// BUG FIX
-				dispatch({ type: USER_UPDATE_PROFILE_RESET });
-				dispatch(getUserDetails('profile'));
-				dispatch(listMyOrders());
+				//dispatch({ type: USER_UPDATE_PROFILE_RESET });
+				// If no user.name in detail or details have been updated
+				if (!user || !user.name || updateSuccess) {
+					dispatch(getUserDetails('profile'));
+				}
+				/*
+				// If user details are updated get my orders
+				if (user && user.name) {
+					dispatch(listMyOrders(pageNumber, '4'));
+				}
+				*/
 			} else {
 				setName(user.name);
 				setEmail(user.email);
 			}
+			if (user && user.name) {
+				dispatch(listMyOrders(pageNumber, '2'));
+			}
+
+			if (updateError) {
+				setMessage(updateError);
+			}
 		}
 		// BUG FIX - orders maybe not needed
-	}, [dispatch, history, userInfo, user, success, orders]);
+	}, [
+		dispatch,
+		history,
+		userInfo,
+		user,
+		pageNumber,
+		updateSuccess,
+		updateError,
+	]);
 
 	const submitHandler = (e) => {
 		e.preventDefault();
 		if (password !== confirmPassword) {
 			setMessage('Passwords do not match');
 		} else {
+			// FIX - CLEAR ERROR MESSAGE
+			//setMessage('');
 			dispatch(
 				// Id from user, the rest from state
 				updateUserProfile({ id: user._id, name, email, password })
@@ -71,8 +107,8 @@ function ProfileScreen({ location, history }) {
 			<Col md={3}>
 				<h2>User Profile</h2>
 				{message && <Message variant='danger'>{message}</Message>}
-				{error && <Message variant='danger'>{error}</Message>}
-				{success && (
+
+				{updateSuccess && (
 					<Message variant='success'>Profile Updated</Message>
 				)}
 				{loading && <Loader />}
@@ -185,6 +221,12 @@ function ProfileScreen({ location, history }) {
 						</tbody>
 					</Table>
 				)}
+				<Paginate
+					pages={pages}
+					page={page}
+					isAdmin={false}
+					subdirectory='/profile'
+				/>
 			</Col>
 		</Row>
 	);

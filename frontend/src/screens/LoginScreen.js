@@ -20,10 +20,10 @@ function LoginScreen({ location, history }) {
 	const redirect = location.search ? location.search.split('=')[1] : '/';
 
 	useEffect(() => {
-		if (userInfo) {
+		if (userInfo && !error) {
 			history.push(redirect);
 		}
-	}, [history, userInfo, redirect]);
+	}, [history, userInfo, error, redirect]);
 
 	const submitHandler = (e) => {
 		e.preventDefault();

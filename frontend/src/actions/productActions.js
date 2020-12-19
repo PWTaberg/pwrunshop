@@ -26,21 +26,18 @@ import {
 // Function within a function (redux-thunk)
 //export const listProducts = (keyword = '', pageNumber = '') => async (
 
-export const listProducts = (keyword = '', pageNumber = '') => async (
-	dispatch
-) => {
+export const listProducts = (
+	keyword = '',
+	pageNumber = '',
+	pageSize = '4'
+) => async (dispatch) => {
 	try {
 		// Send the request
 		dispatch({ type: PRODUCT_LIST_REQUEST });
 
-		const productListResponse = await axios.get(
-			`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+		const { data } = await axios.get(
+			`/api/products?keyword=${keyword}&pageNumber=${pageNumber}&pageSize=${pageSize}`
 		);
-		const { data } = productListResponse;
-
-		//	console.log('producrActions.productListRespone', productListResponse);
-		//	console.log('data', data);
-		/* ** */
 
 		// Request was success
 		dispatch({
@@ -63,6 +60,7 @@ export const listProductDetails = (id) => async (dispatch) => {
 	try {
 		// Send the request
 		dispatch({ type: PRODUCT_DETAILS_REQUEST });
+
 		const { data } = await axios.get(`/api/products/${id}`);
 
 		// Request was success
@@ -71,11 +69,6 @@ export const listProductDetails = (id) => async (dispatch) => {
 			payload: data,
 		});
 	} catch (error) {
-		// Request was a failure
-		//console.log('productAction.listProductDetails.error', error);
-		//console.log('error.response', error.response);
-		//console.log('error.message', error.message);
-
 		dispatch({
 			type: PRODUCT_DETAILS_FAIL,
 			payload:
@@ -181,7 +174,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
 			config
 		);
 
-		// get details
+		// update details
 		dispatch({
 			type: PRODUCT_UPDATE_SUCCESS,
 			payload: data,
@@ -245,10 +238,6 @@ export const listTopProducts = () => async (dispatch) => {
 		dispatch({ type: PRODUCT_TOP_REQUEST });
 
 		const { data } = await axios.get(`/api/products/top`);
-
-		//	console.log('producrActions.productListRespone', productListResponse);
-		//	console.log('data', data);
-		/* ** */
 
 		// Request was success
 		dispatch({

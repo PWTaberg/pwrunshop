@@ -6,18 +6,49 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import { savePaymentMethod } from '../actions/cartActions';
 
 const PaymentScreen = ({ history }) => {
+	const dispatch = useDispatch();
+
 	const cart = useSelector((state) => state.cart);
+	const {
+		shippingAddress,
+		cartItems,
+		checkoutButtonSelected,
+		paymentMethod,
+	} = cart;
 
-	const { shippingAddress, paymentMethod } = cart;
-
-	if (!shippingAddress) {
-		history.push('/shipping');
+	let redirectPage;
+	if (cartItems.length === 0) {
+		redirectPage = '/cart';
 	}
 
-	//const [paymentMethod, setPaymentMethod] = useState('PayPal');
+	if (!redirectPage && checkoutButtonSelected === false) {
+		redirectPage = '/cart';
+	}
+
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
+
+	if (!redirectPage && !userInfo) {
+		//history.push('/login');
+		redirectPage = '/login';
+	}
+
+	if (
+		!redirectPage &&
+		(!shippingAddress ||
+			!shippingAddress.address ||
+			shippingAddress.address === '')
+	) {
+		redirectPage = '/shipping';
+	}
+
+	if (redirectPage) {
+		history.push(redirectPage);
+	}
+	// Fixa Antons Method
 	const [method, setMethod] = useState(paymentMethod);
 
-	const dispatch = useDispatch();
+	//const dispatch = useDispatch();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -26,6 +57,7 @@ const PaymentScreen = ({ history }) => {
 
 		history.push('/placeorder');
 	};
+
 	/*
 checked={method === 'PayPal' ? true : false}
 

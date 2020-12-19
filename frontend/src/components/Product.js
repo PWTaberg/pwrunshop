@@ -1,11 +1,14 @@
 import React from 'react';
+//import '../i18n';
 import { Link } from 'react-router-dom';
 import { Card } from 'react-bootstrap';
 import Rating from './Rating';
+import { useTranslation } from 'react-i18next';
 
 //const Product = ({ product }) => {
 const Product = (props) => {
-	//	console.log('Product.props', props);
+	const { t } = useTranslation();
+
 	const { product } = props;
 	return (
 		<Card className='my-3 p-3 rounded'>
@@ -21,7 +24,7 @@ const Product = (props) => {
 				<Card.Text as='div'>
 					<Rating
 						value={product.rating}
-						text={`${product.numReviews} reviews`}
+						text={`${product.numReviews} ${t('reviews')}`}
 					/>
 				</Card.Text>
 				<Card.Text as='h3'>${product.price} </Card.Text>

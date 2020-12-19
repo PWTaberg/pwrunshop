@@ -1,0 +1,22 @@
+{
+	"addToCart": "Lägg i kundvagn",
+	"comment": "Kommentar",
+	"description": "Beskrivning",
+	"excellent": "5 - Fantastisk",
+	"fair": "2 - OK",
+	"goBack": "Tillbaka",
+	"good": "3 - Bra",
+	"greeting": "Välkommen till Runners Shop",
+	"inStock": "Finns i lager",
+	"latestProducts": "Våra Senaste Produkter",
+	"noReviews": "Inga Recensioner",
+	"outOfStock": "Ej i lager",
+	"price": "Pris",
+	"poor": "1 - Dålig",
+	"rating": "Betyg",
+	"reviews": "recensioner",
+	"select": "Välj ...",
+	"submit": "Skicka In",
+	"veryGood": "4 - Mycket Bra",
+	"writeACustomerReview": "Skriv en Recension"
+}

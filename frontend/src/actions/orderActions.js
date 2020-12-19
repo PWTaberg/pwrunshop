@@ -20,6 +20,12 @@ import {
 	ORDER_DELIVER_FAIL,
 } from '../constants/orderConstants';
 
+import {
+	//CART_REMOVE_SHIPPING_ADDRESS,
+	//CART_REMOVE_PAYMENT_METHOD,
+	CART_RESET,
+} from '../constants/cartConstants';
+
 export const createOrder = (order) => async (dispatch, getState) => {
 	try {
 		dispatch({
@@ -43,6 +49,9 @@ export const createOrder = (order) => async (dispatch, getState) => {
 			type: ORDER_CREATE_SUCCESS,
 			payload: data,
 		});
+
+		// Order is in DB, empty Cart
+		dispatch({ type: CART_RESET });
 	} catch (error) {
 		// Request was a failure
 		dispatch({
@@ -173,7 +182,10 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
 	}
 };
 
-export const listMyOrders = () => async (dispatch, getState) => {
+export const listMyOrders = (pageNumber = '', pageSize = '4') => async (
+	dispatch,
+	getState
+) => {
 	try {
 		dispatch({
 			type: ORDER_MY_LIST_REQUEST,
@@ -190,7 +202,10 @@ export const listMyOrders = () => async (dispatch, getState) => {
 			},
 		};
 
-		const { data } = await axios.get(`/api/orders/myorders`, config);
+		const { data } = await axios.get(
+			`/api/orders/myorders?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+			config
+		);
 
 		// get details
 		dispatch({
@@ -209,7 +224,10 @@ export const listMyOrders = () => async (dispatch, getState) => {
 	}
 };
 
-export const listOrders = () => async (dispatch, getState) => {
+export const listOrders = (pageNumber = '', pageSize = '4') => async (
+	dispatch,
+	getState
+) => {
 	try {
 		dispatch({
 			type: ORDER_LIST_REQUEST,
@@ -226,7 +244,10 @@ export const listOrders = () => async (dispatch, getState) => {
 			},
 		};
 
-		const { data } = await axios.get(`/api/orders`, config);
+		const { data } = await axios.get(
+			`/api/orders?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+			config
+		);
 
 		// get details
 		dispatch({

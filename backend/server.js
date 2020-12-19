@@ -56,6 +56,8 @@ console.log(
 //console.log('__dirname', __dirname);
 //const __dirname = path.resolve() --- does not work
 //app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+
+// __dirname pints to backend
 app.use('/uploads', express.static(path.join(process.cwd(), '/uploads')));
 
 if (process.env.NODE_ENV === 'production') {

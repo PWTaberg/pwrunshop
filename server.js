@@ -5,24 +5,16 @@ const dotenv = require('dotenv');
 const colors = require('colors');
 const morgan = require('morgan');
 
-console.log('server starting');
-
-console.log('map middleware');
-
 const {
 	notFound,
 	errorHandler,
 } = require('./backend/middleware/errorMiddleware.js');
-
-console.log('map middleware - DONE');
 
 const connectDB = require('./backend/config/db.js');
 const productRoutes = require('./backend/routes/productRoutes.js');
 const userRoutes = require('./backend/routes/userRoutes.js');
 const orderRoutes = require('./backend/routes/orderRoutes.js');
 const uploadRoutes = require('./backend/routes/uploadRoutes.js');
-
-console.log('connect DB');
 
 dotenv.config();
 
@@ -33,8 +25,6 @@ const app = express();
 if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'));
 }
-console.log('map routes');
-
 app.use(express.json());
 
 app.use('/api/products', productRoutes);

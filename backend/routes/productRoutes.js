@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { protect, admin } = require('../Middleware/authMiddleware.js');
+const { protect, admin } = require('../middleware/authMiddleware.js');
 
 // import {getProducts, getProductById} from '../controllers/productController.js';
 const {

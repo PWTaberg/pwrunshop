@@ -9,7 +9,7 @@ const {
 	getOrders,
 	updateOrderToDelivered,
 } = require('../controllers/orderController.js');
-const { protect, admin } = require('../Middleware/authMiddleware.js');
+const { protect, admin } = require('../middleware/authMiddleware.js');
 
 router.route('/').post(protect, addOrderItems).get(protect, admin, getOrders);
 router.route('/myorders').get(protect, getMyOrders);

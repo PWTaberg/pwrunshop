@@ -4,17 +4,24 @@ const express = require('express');
 const dotenv = require('dotenv');
 const colors = require('colors');
 const morgan = require('morgan');
+console.log('server starting');
 
-// import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+console.log('map middleware');
+
 const {
 	notFound,
 	errorHandler,
 } = require('./backend/middleware/errorMiddleware.js');
+
+console.log('map middleware - DONE');
+
 const connectDB = require('./backend/config/db.js');
 const productRoutes = require('./backend/routes/productRoutes.js');
 const userRoutes = require('./backend/routes/userRoutes.js');
 const orderRoutes = require('./backend/routes/orderRoutes.js');
 const uploadRoutes = require('./backend/routes/uploadRoutes.js');
+
+console.log('connect DB');
 
 dotenv.config();
 
@@ -25,6 +32,7 @@ const app = express();
 if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'));
 }
+console.log('map routes');
 
 app.use(express.json());
 
@@ -40,27 +48,6 @@ app.get('/api/config/paypal', (req, res) => {
 	res.send(process.env.PAYPAL_CLIENT_ID);
 });
 
-/*
-console.log(
-	'express.static, using __dirname:',
-	path.join(__dirname, '/frontend/build')
-);
-console.log(
-	'express.static, using process.cwd:',
-	path.join(process.cwd(), '/frontend/build')
-);
-console.log(
-	'res.sendFile, using process.cwd:',
-	path.resolve(process.cwd(), 'frontend', 'build', 'index.html')
-);
-
-*/
-
-//console.log('__dirname', __dirname);
-//const __dirname = path.resolve() --- does not work
-//app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
-
-// __dirname pints to backend
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 if (process.env.NODE_ENV === 'production') {
